@@ -79,10 +79,12 @@ def assignment():
             print("Menampilkan tabel sqlite : "+table_name)
             print(df)
 
-
+    extract_from_csv = extract_from_csv(param1 = "{{ params['filename'] }}")
+    extract_web = extract_web(param1 = "{{ params['url'] }}",param2 = "{{ params['filename'] }}")
+    load_sqlite = load_sqlite(df = extract_from_csv,table_name = "{{ params['filename'] }}")
     # extract_web(param1 = "{{ params['url'] }}") >> extract_csv(param1 = "{{ params['url'] }}")
 
-    start_task >> extract_web(param1 = "{{ params['url'] }}",param2 = "{{ params['filename'] }}") >> [extract_from_csv(param1 = "{{ params['filename'] }}"),extract_from_json] >> load_sqlite(df = extract_from_csv(param1 = "{{ params['filename'] }}"),table_name = "{{ params['filename'] }}") >> end_task
+    start_task >> extract_web >> [extract_from_csv,extract_from_json] >> load_sqlite >> end_task
    
 
 
